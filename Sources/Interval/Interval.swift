@@ -22,12 +22,13 @@ infix operator .. : RangeFormationPrecedence
 /// let i = 0..100
 /// let j = 100..3.14
 /// ```
-public func .. <T>(left: T, right: T) -> Interval<T> {
+@inlinable public func .. <T>(left: T, right: T) -> Interval<T> {
     Interval(left, right)
 }
 
 /// Represents a closed floating-point interval from `a..b`.
 /// Unlike `ClosedRange`, `a` may be greater than `b`.
+@frozen
 public struct Interval<T: FloatingPoint> : Equatable, Hashable {
     public typealias Bound = T
 
@@ -46,13 +47,13 @@ public struct Interval<T: FloatingPoint> : Equatable, Hashable {
     /// let i = Interval(0, 100) // equivalent to 0..100
     /// let j = Interval(100, 3.14) // equivalent to 100..3.14
     /// ```
-    public init(_ a: Bound, _ b: Bound) {
+    @inlinable public init(_ a: Bound, _ b: Bound) {
         self.a = a
         self.b = b
     }
 
     /// Returns the unit interval.
-    public static var unit: Interval<T> { 0..1 }
+    @inlinable public static var unit: Interval<T> { 0..1 }
 }
 
 extension Interval {
@@ -63,7 +64,7 @@ extension Interval {
     /// (0..100).isAscending // true
     /// (100..0).isAscending // false
     /// ```
-    public var isAscending: Bool {
+    @inlinable public var isAscending: Bool {
         a < b
     }
 
@@ -74,7 +75,7 @@ extension Interval {
     /// (0..100).isDescending // false
     /// (100..0).isDescending // true
     /// ```
-    public var isDescending: Bool {
+    @inlinable public var isDescending: Bool {
         a > b
     }
 
@@ -88,7 +89,7 @@ extension Interval {
     /// (0..100).isEmpty // false
     /// (100..100).isEmpty // true
     /// ```
-    public var isEmpty: Bool {
+    @inlinable public var isEmpty: Bool {
         a == b
     }
 }
@@ -100,7 +101,7 @@ extension Interval {
     /// ```
     /// (0..100).reversed == 100..0 // true
     /// ```
-    public var reversed: Interval {
+    @inlinable public var reversed: Interval {
         Interval(b, a)
     }
 
@@ -111,7 +112,7 @@ extension Interval {
     /// (0..100).normalized == 0..100 // true
     /// (100..0).normalized == 0..100 // true
     /// ```
-    public var normalized: Interval {
+    @inlinable public var normalized: Interval {
         isAscending ? self : reversed
     }
 }
@@ -123,7 +124,7 @@ extension Interval {
     /// ```
     /// (0..100).min // 0.0
     /// ```
-    public var min: Bound {
+    @inlinable public var min: Bound {
         Swift.min(a, b)
     }
 
@@ -133,7 +134,7 @@ extension Interval {
     /// ```
     /// (0..100).max // 100.0
     /// ```
-    public var max: Bound {
+    @inlinable public var max: Bound {
         Swift.max(a, b)
     }
 
@@ -144,7 +145,7 @@ extension Interval {
     /// (0..100).extent // 100.0
     /// (100..0).extent // -100.0
     /// ```
-    public var extent: T {
+    @inlinable public var extent: T {
         b - a
     }
 
@@ -159,7 +160,7 @@ extension Interval {
     /// (0..100).contains(100) // true
     /// (0..100).contains(200) // false
     /// ```
-    public func contains(_ n: Bound) -> Bool {
+    @inlinable public func contains(_ n: Bound) -> Bool {
         min <= n && n <= max
     }
 
@@ -175,7 +176,7 @@ extension Interval {
     /// (0..100).contains(90..100) // true
     /// (0..100).contains(200..101) // false
     /// ```
-    public func contains(_ other: Interval) -> Bool {
+    @inlinable public func contains(_ other: Interval) -> Bool {
         min <= other.min && other.max <= max
     }
 
@@ -191,7 +192,7 @@ extension Interval {
     /// (0..100).intersects(with: 90..100) // true
     /// (0..100).intersects(with: 200..101) // false
     /// ```
-    public func intersects(with other: Interval) -> Bool {
+    @inlinable public func intersects(with other: Interval) -> Bool {
         let i1 = self.normalized
         let i2 = other.normalized
 
@@ -211,7 +212,7 @@ extension Interval {
     /// (0..50).intersection(with: (50..100)) // 50.0..50.0
     /// (0..30).intersection(with: (50..100)) // nil
     /// ```
-    public func intersection(with other: Interval) -> Interval? {
+    @inlinable public func intersection(with other: Interval) -> Interval? {
         let i1 = self.normalized
         let i2 = other.normalized
 
@@ -233,7 +234,7 @@ extension Interval {
     /// (0..50).union(with: (50..100)) // 0.0..100.0
     /// (70..60).union(with: (50..100)) // 50.0..100.0
     /// ```
-    public func union(with other: Interval) -> Interval {
+    @inlinable public func union(with other: Interval) -> Interval {
         Interval(Swift.min(min, other.min), Swift.max(max, other.max))
     }
 }
@@ -257,7 +258,7 @@ extension Interval {
     /// ```
     /// Interval(10.5...203.7) // 10.5..203.7
     /// ```
-    public init(_ r: ClosedRange<Bound>) {
+    @inlinable public init(_ r: ClosedRange<Bound>) {
         self.a = r.lowerBound
         self.b = r.upperBound
     }
@@ -272,7 +273,7 @@ extension ClosedRange where Bound: FloatingPoint {
     /// ClosedRange(10.5..203.7) // 10.5...203.7
     /// ClosedRange(203.7..10.5) // 10.5...203.7
     /// ```
-    public init(_ i: Interval<Bound>) {
+    @inlinable public init(_ i: Interval<Bound>) {
         let i = i.normalized
         self.init(uncheckedBounds: (i.a, i.b))
     }
@@ -280,7 +281,7 @@ extension ClosedRange where Bound: FloatingPoint {
 
 extension Interval {
     /// Returns `true` if `a` and `b` are both finite.
-    public var isFinite: Bool {
+    @inlinable public var isFinite: Bool {
         a.isFinite && b.isFinite
     }
 }
