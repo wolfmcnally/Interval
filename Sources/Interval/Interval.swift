@@ -28,7 +28,7 @@ public func .. <T>(left: T, right: T) -> Interval<T> {
 
 /// Represents a closed floating-point interval from `a..b`.
 /// Unlike `ClosedRange`, `a` may be greater than `b`.
-public struct Interval<T: BinaryFloatingPoint> : Equatable, Hashable {
+public struct Interval<T: FloatingPoint> : Equatable, Hashable {
     public typealias Bound = T
 
     /// This interval's first bound.
@@ -263,7 +263,7 @@ extension Interval {
     }
 }
 
-extension ClosedRange where Bound: BinaryFloatingPoint {
+extension ClosedRange where Bound: FloatingPoint {
     /// Constructs a `ClosedRange` from an `Interval`.
     /// If `a` > `b` then `b` will be the range's `lowerBound`.
     ///
@@ -285,7 +285,7 @@ extension Interval {
     }
 }
 
-extension BinaryFloatingPoint {
+extension FloatingPoint {
     /// The value linearly interpolated from the unit interval `0..1` to the interval `a..b`.
     ///
     /// # Example #

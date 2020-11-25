@@ -11,7 +11,7 @@ The Swift package including unit tests is available [here](https://github.com/wo
 The basic type is defined as follows:
 
 ```swift
-public struct Interval<T: BinaryFloatingPoint> : Equatable, Hashable {
+public struct Interval<T: FloatingPoint> : Equatable, Hashable {
     public typealias Bound = T
 
     public let a: Bound
@@ -72,12 +72,12 @@ Because `Interval` is designed to be used with geometric calculations, it contai
 
 ## Linear Interpolation
 
-One place `Interval` shines is when you need to do linear interpolation. An extension on `BinaryFloatingPoint` makes every one of these types interpolable into and out of normalized unit spaces and between spaces.
+One place `Interval` shines is when you need to do linear interpolation. An extension on `FloatingPoint` makes every one of these types interpolable into and out of normalized unit spaces and between spaces.
 
 Interpolation is not clamped, so interpolating a value outside the interval `0..1` to another interval results in extrapolation.
 
 ```swift
-extension BinaryFloatingPoint {
+extension FloatingPoint {
     /// The value linearly interpolated from the unit interval `0..1` to the interval `a..b`.
     public func interpolated(to i: Interval<Self>) -> Self
 
@@ -144,7 +144,7 @@ extension Interval {
     public init(_ r: ClosedRange<Bound>)
 }
 
-extension ClosedRange where Bound: BinaryFloatingPoint {
+extension ClosedRange where Bound: FloatingPoint {
     public init(_ i: Interval<Bound>)
 }
 ```
