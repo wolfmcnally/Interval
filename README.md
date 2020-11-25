@@ -4,12 +4,14 @@ When working on code where I'm doing a lot of calculation in geometric spaces su
 
 I have developed a type, `Interval` along with an operator to construct such intervals that I have found very useful, and think others might find it useful too. It might be worth considering including in the Standard Library.
 
+The Swift package including unit tests is available [here](https://github.com/wolfmcnally/Interval).
+
 ## Definition
 
 The basic type is defined as follows:
 
 ```swift
-public struct Interval<T: BinaryFloatingPoint> : Equatable {
+public struct Interval<T: BinaryFloatingPoint> : Equatable, Hashable {
     public typealias Bound = T
 
     public let a: Bound
@@ -153,7 +155,7 @@ Extensions on `Float`, `Double`, and `CGFloat` provide the ability to produce ra
 
 ```swift
 extension Double {
-	public static func random(in interval: Interval<Self>) -> Self
-	public static func random<T: RandomNumberGenerator>(in interval: Interval<Self>, using generator: inout T) -> Self
+    public static func random(in interval: Interval<Self>) -> Self
+    public static func random<T: RandomNumberGenerator>(in interval: Interval<Self>, using generator: inout T) -> Self
 }
 ```
