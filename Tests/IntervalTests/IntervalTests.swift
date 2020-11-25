@@ -108,15 +108,6 @@ final class IntervalTests: XCTestCase {
         XCTAssertFalse((20..Double.infinity).isFinite)
     }
 
-    func testInterpolateFrom() {
-        XCTAssertEqual((-10.0).interpolated(from: 0..100), -0.1)
-        XCTAssertEqual((0.0).interpolated(from: 0..100), 0)
-        XCTAssertEqual((10.0).interpolated(from: 0..100), 0.1)
-        XCTAssertEqual((100.0).interpolated(from: 0..100), 1)
-        XCTAssertEqual((110.0).interpolated(from: 0..100), 1.1)
-        XCTAssertEqual((25.0).interpolated(from: 20..30), 0.5)
-    }
-
     func testInterpolateTo() {
         XCTAssertEqual((-0.1).interpolated(to: 0..100), -10)
         XCTAssertEqual((0.0).interpolated(to: 0..100), 0)
@@ -124,6 +115,15 @@ final class IntervalTests: XCTestCase {
         XCTAssertEqual((1.0).interpolated(to: 0..100), 100)
         XCTAssertEqual(round((1.1).interpolated(to: 0..100)), 110)
         XCTAssertEqual((0.5).interpolated(to: 20..30), 25)
+    }
+
+    func testInterpolateFrom() {
+        XCTAssertEqual((-10.0).interpolated(from: 0..100), -0.1)
+        XCTAssertEqual((0.0).interpolated(from: 0..100), 0)
+        XCTAssertEqual((10.0).interpolated(from: 0..100), 0.1)
+        XCTAssertEqual((100.0).interpolated(from: 0..100), 1)
+        XCTAssertEqual((110.0).interpolated(from: 0..100), 1.1)
+        XCTAssertEqual((25.0).interpolated(from: 20..30), 0.5)
     }
 
     func testInterpolateFromTo() {

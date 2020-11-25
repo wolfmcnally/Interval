@@ -72,13 +72,15 @@ Because `Interval` is designed to be used with geometric calculations, it contai
 
 One place `Interval` shines is when you need to do linear interpolation. An extension on `BinaryFloatingPoint` makes every one of these types interpolable into and out of normalized unit spaces and between spaces.
 
+Interpolation is not clamped, so interpolating a value outside the interval `0..1` to another interval results in extrapolation.
+
 ```swift
 extension BinaryFloatingPoint {
-    /// The value linearly interpolated from the interval `a..b` into the unit interval `0..1`.
-    public func interpolated(from i: Interval<Self>) -> Self
-
     /// The value linearly interpolated from the unit interval `0..1` to the interval `a..b`.
     public func interpolated(to i: Interval<Self>) -> Self
+
+    /// The value linearly interpolated from the interval `a..b` into the unit interval `0..1`.
+    public func interpolated(from i: Interval<Self>) -> Self
 
     /// The value linearly interpolated from the interval `i1` to the interval `i2`.
     public func interpolated(from i1: Interval<Self>, to i2: Interval<Self>) -> Self

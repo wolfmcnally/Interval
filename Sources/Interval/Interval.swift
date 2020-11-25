@@ -286,7 +286,24 @@ extension Interval {
 }
 
 extension BinaryFloatingPoint {
+    /// The value linearly interpolated from the unit interval `0..1` to the interval `a..b`.
+    ///
+    /// # Example #
+    /// ```
+    /// (0.5).interpolated(to: 20..30) // 25
+    /// ```
+    public func interpolated(to i: Interval<Self>) -> Self {
+        assert(isFinite)
+        assert(i.isFinite)
+        return self * (i.b - i.a) + i.a
+    }
+
     /// The value linearly interpolated from the interval `a..b` into the unit interval `0..1`.
+    ///
+    /// # Example #
+    /// ```
+    /// (25.0).interpolated(from: 20..30) // 0.5
+    /// ```
     public func interpolated(from i: Interval<Self>) -> Self {
         assert(isFinite)
         assert(i.isFinite)
@@ -294,14 +311,12 @@ extension BinaryFloatingPoint {
         return (i.a - self) / (i.a - i.b)
     }
 
-    /// The value linearly interpolated from the unit interval `0..1` to the interval `a..b`.
-    public func interpolated(to i: Interval<Self>) -> Self {
-        assert(isFinite)
-        assert(i.isFinite)
-        return self * (i.b - i.a) + i.a
-    }
-
     /// The value linearly interpolated from the interval `i1` to the interval `i2`.
+    ///
+    /// # Example #
+    /// ```
+    /// (20.0).interpolated(from: 0..100, to: 500..100) // 420
+    /// ```
     public func interpolated(from i1: Interval<Self>, to i2: Interval<Self>) -> Self {
         assert(isFinite)
         assert(i1.isFinite)
